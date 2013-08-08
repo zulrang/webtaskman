@@ -29,11 +29,16 @@ class TasksController extends \BaseController {
 	 */
 	public function store()
 	{
-		$input = Input::json();
-		Task::create([
-			'title' => $input->title,
-			'estimate' 	 => $input->estimate
+		$task = Task::create([
+			'title' => Input::get('title'),
+			'estimate' 	 => Input::get('estimate')
 		]);
+
+		if($task) {
+			return Response::json($task, 201);
+		} else {
+			
+		}
 	}
 
 	/**
@@ -67,12 +72,11 @@ class TasksController extends \BaseController {
 	public function update($id)
 	{
 		$task = Task::find($id);
-		$input = Input::json();
 
-		$task->title = $input->title;
-		$task->estimate = $input->estimate;
-		$task->actual = $input->actual;
-		$task->complete = $input->complete;
+		$task->title = Request::get('title');
+		$task->estimate = Request::get('estimate');
+		$task->actual = Request::get('actual');
+		$task->complete = Request::get('complete');
 
 		$task->save();
 	}
